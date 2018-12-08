@@ -6,15 +6,26 @@ import getImageForWeather from './utils/getImageForWeather'
 import SearchInput from './components/SearchInput'
 
 export default class App extends Component {
+  state = {
+    location: 'San Francisco'
+  }
+
+  handleUpdateLocation = city => {
+    this.setState({
+      location: city
+    })
+  }
+
   render() {
+    const { location } = this.state
     return (
       <KeyboardAvoidingView style={styles.container} behavior="padding">
         <ImageBackground source={getImageForWeather('Clear')} style={styles.imageContainer} imageStyle={styles.image}>
           <View style={styles.detailsContainer}>
-        <Text style={[styles.largeText, styles.textStyle]}>San Francisco</Text>
-        <Text style={[styles.smallText, styles.textStyle]}>Light Cloud</Text>
-        <Text style={[styles.largeText, styles.textStyle]}>24°</Text>
-        <SearchInput placeholder="Search any city" />
+            <Text style={[styles.largeText, styles.textStyle]}>{location}</Text>
+            <Text style={[styles.smallText, styles.textStyle]}>Light Cloud</Text>
+            <Text style={[styles.largeText, styles.textStyle]}>24°</Text>
+            <SearchInput placeholder="Search any city" onSubmit={this.handleUpdateLocation} />
           </View>
         </ImageBackground>
       </KeyboardAvoidingView>
@@ -51,7 +62,8 @@ const styles = StyleSheet.create({
       android: {
         fontFamily: 'Roboto'
       }
-    })
+    }),
+    color: 'white'
   },
   largeText: {
     fontSize: 44
