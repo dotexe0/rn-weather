@@ -55,6 +55,21 @@ export default class App extends Component {
       }
     )
   }
+  
+  renderContent() {
+    const { error } = this.state
+    return (
+      <View>
+        {error && <Text>Error</Text>}
+        {!error && this.renderInfo()}
+      </View>
+    )
+  }
+  
+  renderInfo() {
+    const { info } = this.state
+    return <Text>{info}</Text>
+  }
 
   render() {
     const { location, loading, error, weather, temperature } = this.state
@@ -62,12 +77,12 @@ export default class App extends Component {
     return (
       <KeyboardAvoidingView style={styles.container} behavior="padding">
         <StatusBar barStyle="light-content" />
-        <ImageBackground source={getImageForWeather('Clear')} style={styles.imageContainer} imageStyle={styles.image}>
+        <ImageBackground source={getImageForWeather(weather)} style={styles.imageContainer} imageStyle={styles.image}>
           <View style={styles.detailsContainer}>
             <ActivityIndicator animating={loading} color="white" sizing="large" />
             />
-            {!loading && (
-              <View>
+            {!loading && this.renderContent()}
+   
                 {error && (
                   <Text style={[styles.smallText, styles.textStyle]}>
                     Could not load weather, please try a different city.
@@ -81,7 +96,6 @@ export default class App extends Component {
                   </View>
                 )}
                 <SearchInput placeholder="Search any city" onSubmit={this.handleUpdateLocation} />
-              </View>
             )}
           </View>
         </ImageBackground>
