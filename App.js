@@ -25,7 +25,7 @@ export default class App extends Component {
   }
 
   componentDidMount() {
-    this.handleUpdateLocation()
+    this.handleUpdateLocation('San Jose')
   }
 
   handleUpdateLocation = city => {
@@ -55,21 +55,6 @@ export default class App extends Component {
       }
     )
   }
-  
-  renderContent() {
-    const { error } = this.state
-    return (
-      <View>
-        {error && <Text>Error</Text>}
-        {!error && this.renderInfo()}
-      </View>
-    )
-  }
-  
-  renderInfo() {
-    const { info } = this.state
-    return <Text>{info}</Text>
-  }
 
   render() {
     const { location, loading, error, weather, temperature } = this.state
@@ -80,22 +65,22 @@ export default class App extends Component {
         <ImageBackground source={getImageForWeather(weather)} style={styles.imageContainer} imageStyle={styles.image}>
           <View style={styles.detailsContainer}>
             <ActivityIndicator animating={loading} color="white" sizing="large" />
-            />
-            {!loading && this.renderContent()}
-   
-                {error && (
+            {!loading && (
+                <View>
+                {!!error && (
                   <Text style={[styles.smallText, styles.textStyle]}>
                     Could not load weather, please try a different city.
                   </Text>
                 )}
                 {!error && (
-                  <View >
+                  <View>
                     <Text style={[styles.largeText, styles.textStyle]}>{location}</Text>
                     <Text style={[styles.smallText, styles.textStyle]}>{weather}</Text>
                     <Text style={[styles.largeText, styles.textStyle]}>{`${Math.round(temperature)}°`}</Text>
                   </View>
                 )}
                 <SearchInput placeholder="Search any city" onSubmit={this.handleUpdateLocation} />
+                </View>
             )}
           </View>
         </ImageBackground>
